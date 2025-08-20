@@ -26,8 +26,17 @@ const carouselImages = [
   }
 ];
 
+const menuButtons = [
+  "바빠 스마트 클래스",
+  "바빠 수학 전문 교실", 
+  "바빠 초등 문해력 교실",
+  "교사 성장 프로그램",
+  "가입 상담 문의"
+];
+
 export default function Carousel() {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [selectedButton, setSelectedButton] = useState(1); // 기본으로 "바빠 수학 전문 교실" 선택
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -57,6 +66,16 @@ export default function Carousel() {
 
   return (
     <section className="relative w-full bg-white">
+      {/* 상단 파도 모양 */}
+      <div className="absolute top-0 left-0 w-full z-10">
+        <svg viewBox="0 0 1200 40" className="w-full h-10">
+          <path
+            d="M0,40 Q150,10 300,30 T600,20 T900,30 T1200,40 L1200,0 L0,0 Z"
+            fill="white"
+          />
+        </svg>
+      </div>
+
       <div className="max-w-[1200px] mx-auto">
         {/* 메인 이미지 영역 */}
         <div className="relative h-[400px] md:h-[500px] lg:h-[600px] overflow-hidden">
@@ -100,22 +119,31 @@ export default function Carousel() {
           </button>
         </div>
 
-        {/* 인디케이터 */}
-        <div className="flex justify-center space-x-2 py-4">
-          {carouselImages.map((_, index) => (
-            <button
-              key={index}
-              onClick={() => goToSlide(index)}
-              className={`w-3 h-3 rounded-full transition-colors ${
-                index === currentIndex 
-                  ? 'bg-blue-600' 
-                  : 'bg-gray-300 hover:bg-gray-400'
-              }`}
-              aria-label={`슬라이드 ${index + 1}로 이동`}
-            />
-          ))}
+        {/* 하단 5개 버튼 (인디케이터 대체) */}
+        <div className="bg-gray-100 py-6">
+          <div className="max-w-[1200px] mx-auto px-4">
+            <div className="flex justify-center space-x-4">
+              {menuButtons.map((button, index) => (
+                <button
+                  key={index}
+                  onClick={() => {
+                    setSelectedButton(index);
+                    setCurrentIndex(index);
+                  }}
+                  className={`px-6 py-3 rounded font-medium transition-colors ${
+                    selectedButton === index
+                      ? 'bg-black text-white'
+                      : 'bg-white text-black border border-gray-300 hover:bg-gray-50'
+                  }`}
+                >
+                  {button}
+                </button>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
+
     </section>
   );
 }
